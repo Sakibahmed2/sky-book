@@ -1,36 +1,47 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# SkyBook - Flight Booking System
 
-## Getting Started
+A modern, responsive flight booking web application built with Next.js, TypeScript, and pure Tailwind CSS (no component libraries).
 
-First, run the development server:
+## 🚀 Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+### Authentication System
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- User registration with form validation
+- User login with secure authentication
+- Protected routes and authorization
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Flight Management
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Display comprehensive flight listings with details
+- Advanced search and filtering capabilities
+- Add new flights (Admin only)
+- Edit existing flight information (Admin only)
+- Delete flights (Admin only)
+- Real-time flight availability updates
 
-## Learn More
+### Seat Booking System
 
-To learn more about Next.js, take a look at the following resources:
+- Interactive seat map with visual seat selection
+- 2-minute seat reservation with countdown timer
+- Real-time seat availability updates
+- Booking confirmation system
+- Booking management (view, update, cancel)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Additional Features
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Responsive design for all device sizes
+- Modern UI with pure Tailwind CSS
+- Toast notifications for user feedback
+- Form validation with error handling
+- Loading states and user feedback
+- Clean, intuitive user interface
 
-## Deploy on Vercel
+## 🛠️ Technologies Used
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Frontend Framework**: Next.js
+- **Language**: TypeScript
+- **Styling**: Tailwind CSS (Pure - No component libraries)
+- **Icons**: Lucide React
+- **State Management**: React Hooks
+- **Routing**: Next.js App Router
+- **Form Handling**: React Hook Form
