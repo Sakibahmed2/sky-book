@@ -1,5 +1,17 @@
 @import "tailwindcss";
 
+.custom-btn {
+  @apply px-4 py-2 bg-indigo-500 text-white rounded-md hover:bg-indigo-600 transition-colors cursor-pointer;
+}
+
+.btn-outline {
+  @apply px-4 py-2 border border-indigo-300 text-indigo-700 rounded-md hover:bg-indigo-50 transition-colors cursor-pointer;
+}
+
+input {
+  @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-colors;
+}
+
 body {
   background-color: #e6e6e613;
 }
