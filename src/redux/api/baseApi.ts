@@ -6,4 +6,5 @@ export const baseApi = createApi({
     baseUrl: "https://flight-server-six.vercel.app/api",
   }),
   endpoints: () => ({}),
+  tagTypes: ["Flight"],
 });

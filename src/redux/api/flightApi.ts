@@ -2,6 +2,18 @@ import { baseApi } from "./baseApi";
 
 export const flightApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
+    createFlight: builder.mutation({
+      query: ({ payload, token }) => ({
+        url: "/flights",
+        method: "POST",
+        body: payload,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Flight"],
+    }),
+
     getFlights: builder.query({
       query: (query) => {
         console.log(query);
@@ -15,8 +27,24 @@ export const flightApi = baseApi.injectEndpoints({
           },
         };
       },
+      providesTags: ["Flight"],
+    }),
+
+    deleteFlight: builder.mutation({
+      query: ({ id, token }) => ({
+        url: `/flights/${id}`,
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }),
+      invalidatesTags: ["Flight"],
     }),
   }),
 });
 
-export const { useGetFlightsQuery } = flightApi;
+export const {
+  useGetFlightsQuery,
+  useCreateFlightMutation,
+  useDeleteFlightMutation,
+} = flightApi;

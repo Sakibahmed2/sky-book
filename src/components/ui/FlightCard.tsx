@@ -1,13 +1,41 @@
+'use client'
+
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { TFlight } from '@/types/global'
 import { Edit, MapPin, Plane, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import Button from './Button'
 import { getUserInfo } from '@/app/services/authService'
+import { useDeleteFlightMutation } from '@/redux/api/flightApi'
+import { toast } from 'sonner'
+import { useRouter } from 'next/navigation'
 
 const FlightCard = ({ flight }: { flight: TFlight }) => {
 
+    const [deleteFlight, { reset }] = useDeleteFlightMutation()
+
+
+
     const userInfo = getUserInfo() as any
+
+    const handleDelete = async (id: string) => {
+        const token = localStorage.getItem('token')
+
+        if (!token) {
+            return;
+        }
+
+        try {
+            const res = await deleteFlight({ id, token }).unwrap()
+
+            if (res?.ok) {
+                toast.success(res?.message)
+            }
+        } catch (err: any) {
+            console.error("Error deleting flight:", err)
+            toast.error(err?.data?.message || "Failed to delete flight")
+        }
+    }
 
     return (
         <div className="border border-zinc-300 rounded-lg  p-6 flex flex-col justify-between h-full">
@@ -63,6 +91,7 @@ const FlightCard = ({ flight }: { flight: TFlight }) => {
                                 <Button
                                     variant="outline"
                                     className="bg-red-50 border-red-300 text-red-500 hover:bg-red-100"
+                                    onClick={() => handleDelete(flight._id)}
                                 >
                                     <Trash2 className="h-4 w-4" />
                                 </Button>

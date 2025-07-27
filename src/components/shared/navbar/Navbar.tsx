@@ -7,12 +7,17 @@ import Button from '@/components/ui/Button'
 import { removeFormLocalStorage } from '@/utils/localStorage'
 import { Plane } from 'lucide-react'
 import Link from 'next/link'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 
 const Navbar = () => {
+    const [userInfo, setUserInfo] = useState<any>(null)
+    const [mounted, setMounted] = useState(false)
 
-    const userInfo = getUserInfo() as any
-
+    useEffect(() => {
+        setMounted(true)
+        const user = getUserInfo()
+        setUserInfo(user)
+    }, [])
 
     return (
         <Container>
