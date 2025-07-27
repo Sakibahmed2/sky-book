@@ -1,9 +1,11 @@
 'use client'
 
+import Button from '@/components/ui/Button'
 import FlightCard from '@/components/ui/FlightCard'
 import { useGetFlightsQuery } from '@/redux/api/flightApi'
 import { TFlight } from '@/types/global'
 import { Plane, Search } from 'lucide-react'
+import Link from 'next/link'
 import { useState } from 'react'
 
 const FlightsPage = () => {
@@ -28,9 +30,17 @@ const FlightsPage = () => {
 
     return (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="mb-8">
-                <h1 className="text-3xl font-bold text-gray-900 mb-2">Available Flights</h1>
-                <p className="text-gray-600">Find and book your perfect flight</p>
+            <div className="mb-8 flex justify-between items-center">
+                <div>
+                    <h1 className="text-3xl font-bold text-gray-900 mb-2">Available Flights</h1>
+                    <p className="text-gray-600">Find and book your perfect flight</p>
+                </div>
+
+                <Link href="/flights/add">
+                    <Button>
+                        Add Flight
+                    </Button>
+                </Link>
             </div>
 
             {/* Search and Filters */}

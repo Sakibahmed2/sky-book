@@ -1,11 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { useState } from "react"
+import Button from "@/components/ui/Button"
+import { useLoginUserMutation } from "@/redux/api/authApi"
+import { setToLocalStorage } from "@/utils/localStorage"
+import { Eye, EyeOff, Plane } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Plane, Eye, EyeOff } from "lucide-react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
-import Button from "@/components/ui/Button"
+import { toast } from "sonner"
 
 interface LoginFormInputs {
     email: string
@@ -13,20 +17,48 @@ interface LoginFormInputs {
 }
 
 const LoginPage = () => {
+
+    const [loginUser, { isLoading }] = useLoginUserMutation()
+
     const {
         register,
         handleSubmit,
         formState: { errors },
-    } = useForm<LoginFormInputs>()
+
+    } = useForm<LoginFormInputs>({
+        defaultValues: {
+            email: 'johndoe@example.com',
+            password: 'securePass123',
+        }
+    })
 
     const [showPassword, setShowPassword] = useState(false)
-    const [error, setError] = useState("")
+    const [error, setError] = useState<string | null>(null)
 
     const router = useRouter()
 
 
     const onSubmit = async (data: LoginFormInputs) => {
-        console.log(data)
+        const toastId = toast.loading("Logging in...")
+
+
+        try {
+            const res = await loginUser(data).unwrap()
+
+            console.log(res)
+
+            if (res?.ok) {
+                toast.success(res?.message, { id: toastId })
+                setError(null);
+
+                setToLocalStorage("token", res?.data?.token)
+                router.push('/flights')
+            }
+
+        } catch (err: any) {
+            console.log("Login error:", err)
+            toast.error(err?.data?.message, { id: toastId })
+        }
     }
 
     return (

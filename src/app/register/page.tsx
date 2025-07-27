@@ -1,16 +1,22 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client"
 
-import { useState } from "react"
+import Button from "@/components/ui/Button"
+import { useCreateUserMutation } from "@/redux/api/authApi"
+import { setToLocalStorage } from "@/utils/localStorage"
+import { Eye, EyeOff, Plane } from "lucide-react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
-import { Plane, Eye, EyeOff } from "lucide-react"
+import { useState } from "react"
 import { useForm } from "react-hook-form"
-import Button from "@/components/ui/Button"
+import { toast } from "sonner"
 
 interface LoginFormInputs {
     email: string
     password: string
     name: string
+    gender: string
+    phone?: string
 }
 
 const RegisterPage = () => {
@@ -22,12 +28,29 @@ const RegisterPage = () => {
 
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState("")
+    const [createUser] = useCreateUserMutation()
 
     const router = useRouter()
 
 
+
     const onSubmit = async (data: LoginFormInputs) => {
-        console.log(data)
+        const toastId = toast.loading("Creating account...")
+
+
+        try {
+            const res = await createUser(data).unwrap()
+
+            if (res?.ok) {
+                toast.success(res?.message, { id: toastId })
+                setToLocalStorage("token", res?.data?.token)
+                router.push('/flights')
+            }
+        } catch (err: any) {
+            console.log("Error creating user:", err)
+            toast.error(err?.data?.message, { id: toastId })
+        }
+
     }
 
     return (
@@ -47,6 +70,7 @@ const RegisterPage = () => {
                     <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
                         {error && <div className="p-3 bg-red-100 border border-red-400 text-red-700 rounded-md">{error}</div>}
 
+
                         <div className="space-y-2">
                             <label htmlFor="name" className="block text-sm  text-zinc-700">
                                 Full name
@@ -55,46 +79,81 @@ const RegisterPage = () => {
                                 id="name"
                                 type="text"
                                 placeholder="John Doe"
-                            />
-                        </div>
-
-
-
-                        <div className="space-y-2">
-                            <label htmlFor="email" className="block text-sm  text-zinc-700">
-                                Email
-                            </label>
-                            <input
-                                id="email"
-                                type="email"
-                                placeholder="john@example.com"
-                                {...register("email", { required: "Email is required" })}
+                                {...register("name", { required: "Name is required" })}
                                 className=""
                             />
-                            {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                         </div>
 
-                        <div className="space-y-2">
-                            <label htmlFor="password" className="block text-sm  text-zinc-700">
-                                Password
-                            </label>
-                            <div className="relative">
+                        <div className="flex gap-3">
+                            <div className="space-y-2">
+                                <label htmlFor="email" className="block text-sm  text-zinc-700">
+                                    Email
+                                </label>
                                 <input
-                                    id="password"
-                                    type={showPassword ? "text" : "password"}
-                                    placeholder="Enter your password"
-                                    {...register("password", { required: "Password is required" })}
+                                    id="email"
+                                    type="email"
+                                    placeholder="john@example.com"
+                                    {...register("email", { required: "Email is required" })}
                                     className=""
                                 />
-                                <button
-                                    type="button"
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                >
-                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-                                </button>
+                                {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
                             </div>
-                            {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+
+                            <div className="space-y-2">
+                                <label htmlFor="password" className="block text-sm  text-zinc-700">
+                                    Password
+                                </label>
+                                <div className="relative">
+                                    <input
+                                        id="password"
+                                        type={showPassword ? "text" : "password"}
+                                        placeholder="Enter your password"
+                                        {...register("password", { required: "Password is required" })}
+                                        className=""
+                                    />
+                                    <button
+                                        type="button"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-zinc-400 hover:text-zinc-600"
+                                        onClick={() => setShowPassword(!showPassword)}
+                                    >
+                                        {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                    </button>
+                                </div>
+                                {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+                            </div>
+                        </div>
+
+                        <div className="flex gap-3 w-full">
+                            <div className="space-y-2 w-1/2">
+                                <label htmlFor="gender" className="block text-sm  text-zinc-700">
+                                    Gender
+                                </label>
+                                <select
+                                    id="gender"
+                                    {...register("gender", { required: "Gender is required" })}
+                                    className=""
+                                >
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                {errors.gender && <p className="text-red-500 text-sm">{errors.gender.message}</p>}
+                            </div>
+
+                            <div className="space-y-2 w-1/2">
+                                <label htmlFor="phone" className="block text-sm  text-zinc-700">
+                                    Phone
+                                </label>
+                                <input
+                                    id="phone"
+                                    type="tel"
+                                    placeholder="Enter your phone number"
+                                    {...register("phone", { required: "Phone number is required" })}
+                                    className=""
+                                />
+                                {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
+                            </div>
                         </div>
 
                         <Button

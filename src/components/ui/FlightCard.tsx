@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { TFlight } from '@/types/global'
 import { Edit, MapPin, Plane, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import Button from './Button'
+import { getUserInfo } from '@/app/services/authService'
 
 const FlightCard = ({ flight }: { flight: TFlight }) => {
+
+    const userInfo = getUserInfo() as any
+
     return (
         <div className="border border-zinc-300 rounded-lg  p-6 flex flex-col justify-between h-full">
             {/* Top: Flight Info */}
@@ -45,20 +50,30 @@ const FlightCard = ({ flight }: { flight: TFlight }) => {
                 <p className="text-2xl font-bold text-indigo-600">${flight.price}</p>
 
                 <div className="flex items-center gap-2">
-                    <Button>Book Now</Button>
 
-                    <Link href={`/flights/edit/${flight._id}`}>
-                        <Button variant="outline">
-                            <Edit className="h-4 w-4" />
-                        </Button>
-                    </Link>
+                    {
+                        userInfo?.role === 'ADMIN' ? (
+                            <>
+                                <Link href={`/flights/edit/${flight._id}`}>
+                                    <Button variant="outline">
+                                        <Edit className="h-4 w-4" />
+                                    </Button>
+                                </Link>
 
-                    <Button
-                        variant="outline"
-                        className="bg-red-50 border-red-300 text-red-500 hover:bg-red-100"
-                    >
-                        <Trash2 className="h-4 w-4" />
-                    </Button>
+                                <Button
+                                    variant="outline"
+                                    className="bg-red-50 border-red-300 text-red-500 hover:bg-red-100"
+                                >
+                                    <Trash2 className="h-4 w-4" />
+                                </Button>
+                            </>
+                        ) : (
+
+                            <Button>Book Now</Button>
+                        )
+                    }
+
+
                 </div>
             </div>
         </div>
