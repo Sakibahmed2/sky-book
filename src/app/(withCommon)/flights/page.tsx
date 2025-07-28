@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
+import { getUserInfo } from '@/app/services/authService'
 import Button from '@/components/ui/Button'
 import FlightCard from '@/components/ui/FlightCard'
 import { useGetFlightsQuery } from '@/redux/api/flightApi'
@@ -27,6 +29,7 @@ const FlightsPage = () => {
 
     const flights = data?.data?.flights || [];
 
+    const userInfo = getUserInfo() as any;
 
     return (
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -36,11 +39,23 @@ const FlightsPage = () => {
                     <p className="text-gray-600">Find and book your perfect flight</p>
                 </div>
 
-                <Link href="/flights/add">
-                    <Button>
-                        Add Flight
-                    </Button>
-                </Link>
+                {
+                    userInfo?.role === 'ADMIN' ? (
+                        <Link href="/flights/add">
+                            <Button className="flex items-center">
+                                <Plane className="h-5 w-5 mr-2" />
+                                Create Flight
+                            </Button>
+                        </Link>
+                    ) : (
+                        <Link href="/booking">
+                            <Button className="flex items-center">
+                                <Plane className="h-5 w-5 mr-2" />
+                                My bookings
+                            </Button>
+                        </Link>
+                    )
+                }
             </div>
 
             {/* Search and Filters */}

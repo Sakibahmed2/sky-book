@@ -16,7 +16,6 @@ export const flightApi = baseApi.injectEndpoints({
 
     getFlights: builder.query({
       query: (query) => {
-        console.log(query);
         return {
           url: "/flights/search",
           method: "GET",
@@ -25,6 +24,16 @@ export const flightApi = baseApi.injectEndpoints({
             origin: query.origin,
             date: query.date,
           },
+        };
+      },
+      providesTags: ["Flight"],
+    }),
+
+    getFlightById: builder.query({
+      query: (id) => {
+        return {
+          url: `/flights/${id}`,
+          method: "GET",
         };
       },
       providesTags: ["Flight"],
@@ -47,4 +56,5 @@ export const {
   useGetFlightsQuery,
   useCreateFlightMutation,
   useDeleteFlightMutation,
+  useGetFlightByIdQuery,
 } = flightApi;

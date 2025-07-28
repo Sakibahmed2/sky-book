@@ -19,14 +19,18 @@ const Navbar = () => {
         setUserInfo(user)
     }, [])
 
+
     return (
         <Container>
             <div className="flex justify-between items-center h-16 border-b border-zinc-200">
-                <div className="flex items-center">
-                    <Plane className="h-8 w-8 text-indigo-500" />
-                    <span className="ml-2 text-lg
+                <Link href={'/'}>
+                    <div className="flex items-center">
+
+                        <Plane className="h-8 w-8 text-indigo-500" />
+                        <span className="ml-2 text-lg
                      md:text-2xl font-semibold text-gray-900">SkyBook</span>
-                </div>
+                    </div>
+                </Link>
 
                 {
                     userInfo && (

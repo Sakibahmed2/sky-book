@@ -18,19 +18,14 @@ interface LoginFormInputs {
 
 const LoginPage = () => {
 
-    const [loginUser, { isLoading }] = useLoginUserMutation()
+    const [loginUser] = useLoginUserMutation()
 
     const {
         register,
         handleSubmit,
         formState: { errors },
 
-    } = useForm<LoginFormInputs>({
-        defaultValues: {
-            email: 'johndoe@example.com',
-            password: 'securePass123',
-        }
-    })
+    } = useForm<LoginFormInputs>()
 
     const [showPassword, setShowPassword] = useState(false)
     const [error, setError] = useState<string | null>(null)
@@ -45,7 +40,6 @@ const LoginPage = () => {
         try {
             const res = await loginUser(data).unwrap()
 
-            console.log(res)
 
             if (res?.ok) {
                 toast.success(res?.message, { id: toastId })

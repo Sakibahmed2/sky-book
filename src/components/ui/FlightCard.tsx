@@ -1,18 +1,17 @@
 'use client'
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { getUserInfo } from '@/app/services/authService'
+import { useDeleteFlightMutation } from '@/redux/api/flightApi'
 import { TFlight } from '@/types/global'
 import { Edit, MapPin, Plane, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import Button from './Button'
-import { getUserInfo } from '@/app/services/authService'
-import { useDeleteFlightMutation } from '@/redux/api/flightApi'
 import { toast } from 'sonner'
-import { useRouter } from 'next/navigation'
+import Button from './Button'
 
 const FlightCard = ({ flight }: { flight: TFlight }) => {
 
-    const [deleteFlight, { reset }] = useDeleteFlightMutation()
+    const [deleteFlight,] = useDeleteFlightMutation()
 
 
 
@@ -97,8 +96,11 @@ const FlightCard = ({ flight }: { flight: TFlight }) => {
                                 </Button>
                             </>
                         ) : (
-
-                            <Button>Book Now</Button>
+                            <Link href={`/booking/${flight._id}`}>
+                                <Button>
+                                    Book Now
+                                </Button>
+                            </Link>
                         )
                     }
 
