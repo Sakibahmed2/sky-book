@@ -4,6 +4,7 @@
 import { getUserInfo } from '@/app/services/authService'
 import Button from '@/components/ui/Button'
 import FlightCard from '@/components/ui/FlightCard'
+import Loading from '@/components/ui/Loading'
 import { useGetFlightsQuery } from '@/redux/api/flightApi'
 import { TFlight } from '@/types/global'
 import { Plane, Search } from 'lucide-react'
@@ -24,7 +25,7 @@ const FlightsPage = () => {
 
 
     if (isLoading) {
-        return <div className="text-center py-8">Loading flights...</div>
+        return <Loading />
     }
 
     const flights = data?.data?.flights || [];
@@ -40,18 +41,11 @@ const FlightsPage = () => {
                 </div>
 
                 {
-                    userInfo?.role === 'ADMIN' ? (
+                    userInfo?.role === 'ADMIN' && (
                         <Link href="/flights/add">
                             <Button className="flex items-center">
                                 <Plane className="h-5 w-5 mr-2" />
                                 Create Flight
-                            </Button>
-                        </Link>
-                    ) : (
-                        <Link href="/booking">
-                            <Button className="flex items-center">
-                                <Plane className="h-5 w-5 mr-2" />
-                                My bookings
                             </Button>
                         </Link>
                     )

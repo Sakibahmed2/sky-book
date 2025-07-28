@@ -81,11 +81,7 @@ const FlightCard = ({ flight }: { flight: TFlight }) => {
                     {
                         userInfo?.role === 'ADMIN' ? (
                             <>
-                                <Link href={`/flights/edit/${flight._id}`}>
-                                    <Button variant="outline">
-                                        <Edit className="h-4 w-4" />
-                                    </Button>
-                                </Link>
+
 
                                 <Button
                                     variant="outline"

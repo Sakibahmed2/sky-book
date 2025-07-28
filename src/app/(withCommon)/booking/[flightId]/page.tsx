@@ -2,6 +2,7 @@
 'use client'
 
 import Button from '@/components/ui/Button'
+import Loading from '@/components/ui/Loading'
 import { useCreateBookingMutation } from '@/redux/api/bookingApi'
 import { useGetFlightByIdQuery } from '@/redux/api/flightApi'
 import { cn } from '@/utils/cn'
@@ -26,6 +27,8 @@ const BookingFlight = () => {
 
 
 
+
+
     useEffect(() => {
         if (!reservationTimer) return;
 
@@ -45,7 +48,7 @@ const BookingFlight = () => {
     }, [reservationTimer]);
 
     if (isLoading) {
-        return <div className="text-center py-8">Loading flight details...</div>
+        return <Loading />
     }
 
 
@@ -74,6 +77,11 @@ const BookingFlight = () => {
         const payload = {
             flightId: flight._id,
             seatIds: selectedSeats,
+        }
+
+        if (!token) {
+            toast.error("You must be logged in to book a flight", { id: toastId })
+            return;
         }
 
         try {
